@@ -1,4 +1,3 @@
-
 import validator from "validator";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
@@ -86,11 +85,12 @@ const addDoctor = async (req, res) => {
   }
 };
 
-
 const loginAdmin = async (req, res) => {
   try {
     if (!req.body) {
-      return res.status(400).json({ success: false, message: "Missing request body" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing request body" });
     }
 
     const { email, password } = req.body;
@@ -110,5 +110,15 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+//API to get doctors list for admin panel
+const allDoctors = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({}).select("-password");
+    res.json({ success: true, doctors });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
 
-export {addDoctor, loginAdmin}
+export { addDoctor, loginAdmin, allDoctors };
