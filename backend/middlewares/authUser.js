@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const authUser = async (req, res, next) => {
   try {
-    const { token } = req.headers; // token from Postman or frontend
+    const { token } = req.headers;
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -11,8 +11,9 @@ const authUser = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: decoded.id }; // ✅ store in req.user
+    const token_decode = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { id: token_decode.id };
+    // ✅ store in req.user
 
     next();
   } catch (err) {
